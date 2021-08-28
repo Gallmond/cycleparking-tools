@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Tools for developing the cycle parking finding app thing",
   "type": "module",
-  "main": "index.js",
+  "main": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
