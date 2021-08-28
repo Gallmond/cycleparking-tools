@@ -6,6 +6,9 @@ import https from 'https'
 import fs from 'fs'
 import config from './../config.js'
 
+/**
+ * manage the importing and creation of the local json data store
+ */
 class ExportManager{
 
   constructor(){
@@ -39,6 +42,7 @@ class ExportManager{
   }
   
   /**
+   * //TODO split this off into a separate 'CyclePark' class?
    * define here what the slimmed down cyclepark json should include
    * @param {object} place_json 
    * @returns {object}
@@ -99,7 +103,8 @@ class ExportManager{
 
 
   /**
-   * save all the data to a given file
+   * save all the data to a given file 
+   * WARNING this is a large file (64mb)
    * @param {string} destination_file 
    * @returns {Promise} resolves with the destination file path
    */
@@ -117,7 +122,9 @@ class ExportManager{
   }
 
   /**
-   * return a promise containing a very large text string
+   * Request the latest data for ALL places of type CyclePark
+   * WARNING this might take a while, the result is a very large string
+   * @returns {Promise} entire export data (a 64mb string of json)
    */
   requestAllCycleParkPlacesFromTFL = () => {
     return new Promise((resolve, reject) => {
@@ -149,8 +156,7 @@ class ExportManager{
         res.on('end', () => {
           if(this.debug) console.log('request ended with status', res.statusCode, res.statusMessage)
           if(res.statusCode < 200 && res.statusCode > 299){
-            console.log(res)
-            throw new Error('There was an error requesting data from TFL')
+            reject('There was an error requesting data from TFL')
           }
           resolve(data);
         });

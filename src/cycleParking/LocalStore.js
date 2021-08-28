@@ -9,7 +9,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
+/**
+ * handle the local data file that stores all the cycle park data
+ */
 class LocalStore{
 
   constructor(){
@@ -42,6 +44,7 @@ class LocalStore{
 
 
   /**
+   * //TODO is this even necessary?
    * Add the given key to the geohash reference
    * @param {string} geohash
    * @param {string} key 
@@ -174,7 +177,7 @@ class LocalStore{
         let geohash = encode( ob.lat, ob.lon, 9 ) // 9 chars is accurate to about 4 metres ish (and is also as accurate as the TFL coords will get)
         this.addGeoHashReference( geohash, ob.id )
         ob['geohash'] = geohash
-        this.data[ ob.id ] = ob;
+        this.data[ ob.id ] = ob
       });
       rl.on('close', () => {
         resolve(this.data)
