@@ -1,6 +1,10 @@
-const https = require('https')
-const fs = require('fs')
-const config = require('./../config')
+// const https = require('https')
+// const fs = require('fs')
+// const config = require('./../config')
+
+import https from 'https'
+import fs from 'fs'
+import config from './../config.js'
 
 class ExportManager{
 
@@ -179,4 +183,4 @@ class ExportManager{
 
 }
 
-module.exports = ExportManager
+export {ExportManager}

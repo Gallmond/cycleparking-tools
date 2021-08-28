@@ -1,4 +1,4 @@
-const LocalStore = require("./LocalStore")
+import { LocalStore } from "./LocalStore.js"
 
 /**
  * This is the main class you want to use in the app
@@ -25,7 +25,7 @@ class CycleParking{
    * @returns {object|undefined} the place json for one place (or undefined)
    */
   getCycleParkById = async ( place_id ) => {
-    return this.localstore.getPlaceByID( place_id )
+    return await this.localstore.getPlaceByID( place_id )
   }
 
   /**
@@ -62,4 +62,4 @@ class CycleParking{
 
 }
 
-module.exports = CycleParking
+export {CycleParking}

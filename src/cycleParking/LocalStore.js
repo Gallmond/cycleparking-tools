@@ -1,8 +1,14 @@
-const fs = require('fs')
-const readline = require('readline')
-const geofire = require('geofire-common') //TODO replace this with new one
+import fs from 'fs'
+import readline from 'readline'
+import geofire from 'geofire-common'
+import {encode, decode, bounds, adjacent, neighbours} from './GeohashingVeness.js'
 
-const {encode, decode, bounds, adjacent, neighbours} = require('./../utilities/GeohashingVeness')
+// add __dirname and __filename
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 class LocalStore{
 
@@ -10,7 +16,7 @@ class LocalStore{
     /**
      * fully qualified path to the file containing the ndjson
      */
-    this.ndjson_data_file = `${__dirname}/../files/cycleparks.json`
+    this.ndjson_data_file = `${__dirname}/../files/cycleparks.ndjson`
 
     /**
      * place data will be stored here
@@ -181,4 +187,4 @@ class LocalStore{
 
 }
 
-module.exports = LocalStore
+export {LocalStore}
