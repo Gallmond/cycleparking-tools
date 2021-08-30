@@ -46,10 +46,11 @@ const lat = 51.470628, lon = -0.255812, radius_in_metres = 50 // the roundabout 
 
 const cycleParking = new CycleParking()
 // load data from local file for testing sake...
-const file_data = fs.readFileSync( formatted_data_file, {encoding:'utf-8'} )
-const data_object = JSON.parse( file_data )
-cycleParking.setData( data_object )
+// const file_data = fs.readFileSync( formatted_data_file, {encoding:'utf-8'} )
+// const data_object = JSON.parse( file_data )
+// cycleParking.setData( data_object )
 
 cycleParking.getCycleParksInRange( lat, lon, radius_in_metres ).then( places  => {
   console.log(`got ${places.length} places:`, places)
 }).catch( handleReject )
+

@@ -1,9 +1,6 @@
 # workspace
 /.vscode
 
-# ignore the main TFL export (if it exists)
-src/files/*.json
-
 # ignore non-example config
 src/config.json
 

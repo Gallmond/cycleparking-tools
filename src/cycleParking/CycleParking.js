@@ -1,5 +1,11 @@
+import * as fs from 'fs'
 import {encode, decode, bounds, adjacent, neighbours} from './GeohashingVeness.js'
 import geofire from 'geofire-common'
+
+// allow __dirname in module
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 class CycleParking{
 
@@ -7,14 +13,23 @@ class CycleParking{
     this.debug = debug
 
     /**
+     * file holding the data, use this if setData is not used
+     */
+    this.default_data_file = `${__dirname}/../files/cycleparking.json`
+
+    /**
      * the actual place data object
      */
     this.data = {}
+    this.geohashes_created = false
 
     /**
      * store of geohash keys keys
      */
     this.geohash_reference = {}
+
+    // init with default data. The geohash references are not built until this is done
+    this.getData()
 
   }
 
@@ -25,8 +40,26 @@ class CycleParking{
    */
   setData = ( cyclepark_data ) => {
     this.data = cyclepark_data
-    this.addGeohashesToData()
+    if(!this.geohashes_created){
+      this.addGeohashesToData()
+      this.geohashes_created = true  
+    }
     return this
+  }
+
+
+  // getter
+  getData = () => {
+    if(Object.keys(this.data).length === 0){
+      const file_content = fs.readFileSync( this.default_data_file, {encoding:'utf-8'} )
+      this.data = JSON.parse( file_content )
+      if(!this.data) throw new Error(`Could not read content of default_data_file ${this.default_data_file}`)
+      if(!this.geohashes_created){
+        this.addGeohashesToData()
+        this.geohashes_created = true  
+      }
+    }
+    return this.data
   }
 
 
@@ -35,7 +68,7 @@ class CycleParking{
    * @param {string} place_id 
    * @returns {object|undefined} the place json for one place (or undefined)
    */
-  getCycleParkById = ( place_id ) => this.data[ place_id ]
+  getCycleParkById = ( place_id ) => this.getData()[ place_id ]
 
 
   /**
@@ -65,11 +98,16 @@ class CycleParking{
         let place_id = all_keys[i];
         let this_place = this.getCycleParkById( place_id )
 
+        // if for whatever reason this key does not return a place
+        if(!this_place) continue
+
         // skip this place if it's not within radius_in_metres of the search point
-        if(this.getDistBetweenTwoPoints([lat, lon] , [this_place.lat, this_place.lon]) > radius_in_metres) continue
+        const dist_from_centre = this.getDistBetweenTwoPoints([lat, lon] , [this_place.lat, this_place.lon])
+        if(dist_from_centre > radius_in_metres) continue
 
         // add the key as the id, it's not stored in the data object
-        if(this_place) this_place['id'] = place_id
+        this_place['id'] = place_id
+        this_place['dist'] = dist_from_centre.toFixed(1)
 
         // add it to the array
         places.push( this_place )
@@ -116,10 +154,10 @@ class CycleParking{
    * @returns {this}
    */
   addGeohashesToData = () => {
-    for (const place_id in this.data) {
+    for (const place_id in this.getData()) {
       // 9 chars is accurate to about 4 metres ish (and is also as accurate as the TFL coords will get)
-      this.data[ 'geohash' ] = encode( this.data[ place_id ].lat, this.data[ place_id ].lon, 9 ) 
-      this.addGeoHashReference( this.data[ 'geohash' ], place_id )
+      this.data[ place_id ][ 'geohash' ] = encode( this.data[ place_id ].lat, this.data[ place_id ].lon, 9 ) 
+      this.addGeoHashReference( this.data[ place_id ][ 'geohash' ], place_id )
     }
     return this
   }
