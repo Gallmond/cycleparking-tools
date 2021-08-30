@@ -89,14 +89,14 @@ class DataFileManager{
   }
 
   /**
-   * Save the current json_lines to this.ndjson_file
-   * @returns {this}
+   * Save the current json_lines to this.data_file
+   * @returns {Promise} resolved with the file name
    */
   saveDataFile = ( ) => {
     return new Promise((resolve,reject)=>{
-      fs.writeFile( this.data_file, JSON.stringify(this.data_json), (err, result) => {
+      fs.writeFile( this.data_file, JSON.stringify(this.data_json), (err) =>{ 
         if(err) reject(err)
-        resolve(result)
+        resolve( this.data_file )
       })
     })
   }

@@ -60,10 +60,13 @@ class CycleParking{
       }
 
       // collect places
-      const places = [] //TODO new format means place does not have key in itself!!!
       for(let i=0, l=all_keys.length; i<l; i++){
         let place_id = all_keys[i];
         let this_place = this.getCycleParkById( place_id )
+
+        // skip this place if it's not in the bounding circle
+        if(this.getDistBetweenTwoPoints([lat, lon] , [this_place.lat, this_place.lon]) > radius_in_metres) continue
+
         if(this_place) this_place['id'] = place_id
         places.push( this_place )
       }
@@ -136,6 +139,29 @@ class CycleParking{
     }
   }
 
+
+  /**
+   * get distance between two points on a sphere
+   * @param {array} latlon_1 [latitude , longitude]
+   * @param {array} latlon_2 [latitude , longitude]
+   * @returns {number} the distance in metres
+   */
+  getDistBetweenTwoPoints = (latlon_1, latlon_2) => {
+    const [lat1, lon1] = latlon_1
+    const [lat2, lon2] = latlon_2
+    const R = 6371e3 // radius of the earth in metres (give or take)
+    const lat1rads = lat1 * Math.PI/180 // φ, λ in radians
+    const lat2rads = lat2 * Math.PI/180
+    const latdeltarads = (lat2-lat1) * Math.PI/180
+    const londeltarads = (lon2-lon1) * Math.PI/180
+
+    const a = Math.sin(latdeltarads/2) * Math.sin(latdeltarads/2) +
+              Math.cos(lat1rads) * Math.cos(lat2rads) *
+              Math.sin(londeltarads/2) * Math.sin(londeltarads/2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+
+    return R * c // in metres
+  }
 
   
 
