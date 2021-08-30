@@ -3,3 +3,6 @@ src/files/*.json
 
 # ignore non-example config
 src/config.json
+
+# ignore gav's local tests
+localtests.js
