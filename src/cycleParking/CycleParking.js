@@ -29,6 +29,7 @@ class CycleParking{
     return this
   }
 
+
   /**
    * get the object of one place
    * @param {string} place_id 
@@ -42,7 +43,7 @@ class CycleParking{
    * @param {number} lat 
    * @param {number} lon 
    * @param {number} radius_in_metres 
-   * @returns 
+   * @returns {Promise} 
    */
   getCycleParksInRange = ( lat, lon, radius_in_metres ) => {
     return new Promise((resolve,reject)=>{
@@ -64,10 +65,13 @@ class CycleParking{
         let place_id = all_keys[i];
         let this_place = this.getCycleParkById( place_id )
 
-        // skip this place if it's not in the bounding circle
+        // skip this place if it's not within radius_in_metres of the search point
         if(this.getDistBetweenTwoPoints([lat, lon] , [this_place.lat, this_place.lon]) > radius_in_metres) continue
 
+        // add the key as the id, it's not stored in the data object
         if(this_place) this_place['id'] = place_id
+
+        // add it to the array
         places.push( this_place )
       }
 
@@ -120,6 +124,7 @@ class CycleParking{
     return this
   }
 
+
    /**
    * Add the given key to the geohash reference
    * @param {string} geohash
@@ -141,7 +146,8 @@ class CycleParking{
 
 
   /**
-   * get distance between two points on a sphere
+   * get distance between two points on a sphere https://www.movable-type.co.uk/scripts/latlong.html
+   * 
    * @param {array} latlon_1 [latitude , longitude]
    * @param {array} latlon_2 [latitude , longitude]
    * @returns {number} the distance in metres
@@ -162,8 +168,6 @@ class CycleParking{
 
     return R * c // in metres
   }
-
-  
 
 
 }

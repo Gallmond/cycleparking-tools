@@ -1,9 +1,9 @@
 import { CycleParking } from "./cycleParking/CycleParking.js";
-import { ExportManager } from "./cycleParking/ExportManager.js";
-import { LocalStore } from "./cycleParking/LocalStore.js";
+import { TFLAPI } from "./cycleParking/TFLAPI.js";
+import { DataFileManager } from "./cycleParking/DataFileManager.js";
 
 export {
   CycleParking,
-  ExportManager,
-  LocalStore
+  TFLAPI,
+  DataFileManager
 }

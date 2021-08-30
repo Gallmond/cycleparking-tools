@@ -107,6 +107,7 @@ class TFLAPI{
     })
   }
 
+  
   /**
    * get all cycle park places from TFL
    * @returns {Promise} resolves with string of all place data
