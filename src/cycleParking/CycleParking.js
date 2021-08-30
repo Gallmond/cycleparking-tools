@@ -38,7 +38,7 @@ class CycleParking{
 
 
   /**
-   * 
+   * resolves with an array of places
    * @param {number} lat 
    * @param {number} lon 
    * @param {number} radius_in_metres 
@@ -52,7 +52,7 @@ class CycleParking{
       // get bounds 
       const bounds = geofire.geohashQueryBounds([lat, lon], radius_in_metres);
 
-      // get keys from the refence in this bound
+      // get keys from the reference in this bound
       const all_keys = []
       for (let i = 0, l = bounds.length; i < l; i++) {
         const [start, end] = bounds[i];
@@ -61,8 +61,14 @@ class CycleParking{
 
       // collect places
       const places = [] //TODO new format means place does not have key in itself!!!
+      for(let i=0, l=all_keys.length; i<l; i++){
+        let place_id = all_keys[i];
+        let this_place = this.getCycleParkById( place_id )
+        if(this_place) this_place['id'] = place_id
+        places.push( this_place )
+      }
 
-
+      resolve(places) 
     })
   }
 

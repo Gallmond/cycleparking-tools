@@ -53,6 +53,7 @@ class TFLAPI{
    */
   getRequest = ( request_options )  => {
     return new Promise((resolve,reject)=>{
+      if(this.debug) console.log(`Making request with options:`, request_options)
       // make the request
       const req = https.request(request_options, res => {
         let data = '';

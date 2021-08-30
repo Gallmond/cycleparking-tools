@@ -71,8 +71,9 @@ class DataFileManager{
 
   /**
    * format the raw TFL place data into our format
-   * sets this.this.data_json
+   * sets this.data_json
    * @param {string} tfl_export_data 
+   * @returns {this}
    */
   formatTFLData = ( tfl_export_data ) => {
     const parsed_json = JSON.parse( tfl_export_data )
