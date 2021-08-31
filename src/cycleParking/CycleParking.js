@@ -52,12 +52,9 @@ class CycleParking{
   getData = () => {
     if(Object.keys(this.data).length === 0){
       const file_content = fs.readFileSync( this.default_data_file, {encoding:'utf-8'} )
-      this.data = JSON.parse( file_content )
-      if(!this.data) throw new Error(`Could not read content of default_data_file ${this.default_data_file}`)
-      if(!this.geohashes_created){
-        this.addGeohashesToData()
-        this.geohashes_created = true  
-      }
+      const file_object = JSON.parse( file_content )
+      if(!file_object) throw new Error(`Could not read content of default_data_file ${this.default_data_file}`)
+      this.setData( file_object )
     }
     return this.data
   }

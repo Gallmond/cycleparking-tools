@@ -10,18 +10,18 @@ npm install ~/modules/cycleparking-tools
 
 Then in your code 
 
-```
+```javascript
 import { CycleParking } from 'cycleparking-tools'
 
 const cp = new CycleParking()
 
 const lat = 51.470526, lon = -0.255860, radius_in_metres = 100
 
-cp.getCycleParksNear( lat, lon, radius_in_metres ).then( places => {
-  console.log(`getcycleParksNear got ${places.length} places, eg:`)
+cp.getCycleParksInRange( lat, lon, radius_in_metres ).then( places => {
+  console.log(`getCycleParksInRange got ${places.length} places, eg:`)
   console.log( places[0] )
 }).catch( err => {
-  console.log('getCycleParksNear rejected')
+  console.log('getCycleParksInRange rejected')
   console.log( err )
 });
 ```
