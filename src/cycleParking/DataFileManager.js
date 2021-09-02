@@ -33,8 +33,12 @@ class DataFileManager{
   }
 
   // getters
-  getData = () => this.data_json
-  getDataFile = () => this.data_file
+  getData = () => {
+    this.data_json
+  }
+  getDataFile = () => {
+    this.data_file
+  }
 
 
   /**

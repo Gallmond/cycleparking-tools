@@ -65,7 +65,9 @@ class CycleParking{
    * @param {string} place_id 
    * @returns {object|undefined} the place json for one place (or undefined)
    */
-  getCycleParkById = ( place_id ) => this.getData()[ place_id ]
+  getCycleParkById = ( place_id ) => {
+    this.getData()[ place_id ]
+  } 
 
 
   /**
